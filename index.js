@@ -3,7 +3,10 @@ const { Client, GatewayIntentBits, Collection, Partials, Events } = require('dis
 //const { token } = require('./config.json');
 const fs = require('fs');
 const path = require('path');
-const { sequelize } = require('./database');
+const { sequelize } = require('../Where-is-Pablo/database');
+const { startResetJob } = require('../Where-is-Pablo/events/resetSubmissions'); 
+const { startResetJobDaily } = require('../Where-is-Pablo/events/topPostDaily'); 
+const { startResetJobWeekly } = require('../Where-is-Pablo/events/topPostWeekly'); 
 //const  schedulePhoto  = require('../Where is Pablo/commands/setPhotoDay');
 
 
@@ -33,7 +36,10 @@ for (const file of eventFiles) {
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
-    await sequelize.sync({ alter: true });
+    startResetJob();
+    startResetJobDaily(client);
+    startResetJobWeekly(client);
+   // await sequelize.sync({ alter: true });
 
     /*const schedulePhoto = require('../Where is Pablo/commands/setPhotoDay');
     schedulePhoto.startPhotoJob(client);*/

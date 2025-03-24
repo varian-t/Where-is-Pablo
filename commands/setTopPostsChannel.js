@@ -3,8 +3,8 @@ const { Config } = require('../database');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('setchannel')
-        .setDescription('Set the channel for image submissions.')
+        .setName('settoppostschannel')
+        .setDescription('Set the channel for top image announcements.')
         .addChannelOption(option =>
             option.setName('channel')
                 .setDescription('Select a channel')
@@ -21,13 +21,13 @@ module.exports = {
 
         if (!hasRole) {
             return interaction.reply({ 
-                content: 'You do not have permission to set the submission channel.', 
+                content: 'You do not have permission to set the top image announcements channel.', 
                 ephemeral: true 
             });
         }
 
         const channel = interaction.options.getChannel('channel');
-        await Config.upsert({ guildId: interaction.guild.id, submissionChannelId: channel.id });
+        await Config.upsert({ guildId: interaction.guild.id, dailyPostChannelId: channel.id });
 
         interaction.reply(`✅ Submission channel set to ${channel}.`);
     }
